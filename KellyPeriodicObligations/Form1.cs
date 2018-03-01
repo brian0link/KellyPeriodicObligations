@@ -67,6 +67,7 @@ namespace KellyPeriodicObligations
 			double dRealProfit = Math.Round(dProfit - dTaxes - dTithe, 2);
 			double dReinvest = Math.Round(dRealProfit * KellyPercent, 2);
 			double dKeep = Math.Round(dRealProfit - dReinvest, 2);
+			double dTotalKeep = Math.Round(dKeep, 2);
 			double dTotalTax = Math.Round(dTaxes, 2);
 			double dTotalTithe = Math.Round(dTithe, 2);
 			double dPercentIncrease = Math.Round(100 * (dInvest - dBaseAmount) / dBaseAmount, 2);
@@ -89,14 +90,14 @@ namespace KellyPeriodicObligations
 				using (StreamWriter sw = File.CreateText(path))
 				{
 					sw.WriteLine("Invest:\tReturn:\tProfit:\tTaxes:\tTithe:\tReal Profit:\tReinvest:\tKeep:\t" +
-						"Total Tax:\tTotal Tithe:\t% Increase:\t% Profit:\t% Keep:");
+						"Total Keep:\tTotal Tax:\tTotal Tithe:\t% Increase:\t% Profit:\t% Keep:");
 					lDebug.Text = KellyPercent.ToString();
 
 					for (int i = 0; i < 52; i++)
 					{
 						sw.WriteLine(dInvest + "\t" + dReturn + "\t" + dProfit + "\t" + dTaxes + "\t" + dTithe + "\t"
-							+ dRealProfit + "\t" + dReinvest + "\t" + dKeep + "\t" + dTotalTax + "\t" + dTotalTithe + "\t"
-							+ dPercentIncrease + "\t" + dPercentProfit + "\t" + dPercentKeep);
+							+ dRealProfit + "\t" + dReinvest + "\t" + dKeep + "\t" + dTotalKeep + "\t" + dTotalTax + "\t" 
+							+ dTotalTithe + "\t" + dPercentIncrease + "\t" + dPercentProfit + "\t" + dPercentKeep);
 						if (iWeeksTilPay == 0)
 						{
 							sw.WriteLine("Owed Money Paid");
@@ -120,12 +121,12 @@ namespace KellyPeriodicObligations
 						dReinvest = Math.Round(dRealProfit * KellyPercent, 2);
 						dKeep = Math.Round(dRealProfit - dReinvest, 2);
 
-
+						dTotalKeep += Math.Round(dKeep, 2);
 						dTotalTax += Math.Round(dTaxes, 2);
 						dTotalTithe += Math.Round(dTithe, 2);
 						dPercentIncrease = Math.Round((100 * dInvest - dBaseAmount) / dBaseAmount, 2);
 						dPercentProfit = Math.Round((100 * dProfit - dBaseAmount) / dBaseAmount, 2);
-						dPercentKeep = Math.Round((100 * dKeep - dBaseAmount) / dBaseAmount, 2);
+						dPercentKeep = Math.Round((100 * dTotalKeep - dBaseAmount) / dBaseAmount, 2);
 					}
 				}
 			}
